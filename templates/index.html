@@ -12,22 +12,23 @@
         <div class="mt-5">
             
             <h2 class=" mt-5 ms-5">Registrarse</h2>
-            <form action="/operaciones" method="post" class="border border-3">
+            <h4 class="mt-4">{{mensaje}}</h4>
+            <form action="/operaciones" method="post" class="border border-3 p-4">
               <div class="form-group">
                 <label for="nombre">identificacion:</label>
-                <input type="text" class="form-control" id="" name="pullId" required>
+                <input type="text" class="form-control" id="" name="pullId" >
               </div>
               <div class="form-group">
                 <label for="nombre">Nombre:</label>
-                <input type="text" class="form-control" id="" name="pullNombre" required>
+                <input type="text" class="form-control" id="nombre" name="pullNombre" value="{{persona['Nombre']}}">
               </div>
               <div class="form-group">
                 <label for="apellidos">Apellidos:</label>
-                <input type="text" class="form-control" id="" name="pullApellidos" required>
+                <input type="text" class="form-control" id="" name="pullApellidos">
               </div>
               <div class="form-group">
                 <label for="correo">Correo Electrónico:</label>
-                <input type="email" class="form-control mb-3" id="" name="pullCorreo" required>
+                <input type="email" class="form-control mb-3" id="" name="pullCorreo" >
               </div>
               
               <div class="my-4 mx-5">
@@ -38,7 +39,6 @@
                 </div>
             </form>
         </div>
-        <h2>{{mensaje}}</h2>
 
         <table class="table mt-5">
             <thead class="border-3">
@@ -49,14 +49,28 @@
                     <th class="border-2" scope="col">Correo</th>
                 </tr>
             </thead>
-            <tbody>
-                {%for persona in personas %}
-                    <tr>
-                        <td class="border-2">{{persona['identificacion']}}</td>
-                        <td class="border-2">{{persona['Nombre']}}</td>
-                        <td class="border-2">{{persona['apellido']}}</td>
-                        <td class="border-2">{{persona{'correo'}}}</td>
-                    </tr>
+            <tbody id="datosPersonas">
+                {%for x in personas %}
+                   if x['identificacion']== persona['identificacion'] and  bandera=='actualizar':
+                        <tr>
+                            <td class="border-2">{{persona['identificacion']}}</td>
+                            <td class="border-2">{{persona['Nombre']}}</td>
+                            <td class="border-2">{{persona['apellido']}}</td>
+                            <td class="border-2">{{persona['correo']}}</td>
+                        </tr>
+
+                    elif x['identificacion']== persona['identificacion'] and bandera=='eliminar':
+                        <td class="border-2"></td>
+                        <td class="border-2"></td>
+                        <td class="border-2"></td>
+                        <td class="border-2"></td>
+                    else:
+                        <tr>
+                            <td class="border-2">{{x['identificacion']}}</td>
+                            <td class="border-2">{{x['Nombre']}}</td>
+                            <td class="border-2">{{x['apellido']}}</td>
+                            <td class="border-2">{{x['correo']}}</td>
+                        </tr>
                 {% endfor %}
                 
             </tbody>

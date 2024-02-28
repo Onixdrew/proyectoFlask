@@ -8,13 +8,24 @@ listaPersonas=[]
 def inicio():
     return render_template("index.html")
 
+def existeId(id)->bool:
+    for p in listaPersonas:
+        if p['identificacion']==id:
+            return True
+    return False
+
+def existeCorreo(correo)->bool:
+    for p in listaPersonas:
+        if p['correo']==correo:
+            return True
+    return False
 
 
 @app.route("/operaciones", methods=['POST'])
 def operaciones():
     option=request.form['btnOption']
     mensaje=''
-    producto=None
+    bandera=None
     
     match (option):
         case 'agregar':
@@ -23,26 +34,79 @@ def operaciones():
         #          request.form['pullApellidos'],
         #          request.form['pullCorreo']
         #         ]
+        
+            identificacion=request.form['pullId']
+            correo=request.form['pullCorreo']
             persona={
-                "identificacion":request.form['pullId'],
+                "identificacion":identificacion,
                 "Nombre":request.form['pullNombre'],
                 "apellido":request.form['pullApellidos'],
-                "correo":request.form['pullCorreo']
-                
+                "correo":correo  
             }
-            listaPersonas.append(persona)
-            mensaje='agregada satisfactoriamente'
+            
+            existe=existeId(identificacion)
+            if not existe:
+                listaPersonas.append(persona)
+                mensaje='agregada satisfactoriamente'
+                
+            else:
+                mensaje='¡Esta persona ya existe!'
+                persona=persona    
 
         case 'consultar':
-            pass
+            
+            identificacion=request.form['pullId']
+            correo=request.form['pullCorreo']
+            # persona={
+            #     "identificacion":identificacion,
+            #     "Nombre":request.form['pullNombre'],
+            #     "apellido":request.form['pullApellidos'],
+            #     "correo":correo
+            # }
+                
+            existe=existeId(identificacion)
+            
+            if existe:
+                for resultado in listaPersonas:
+                    if resultado['identificacion']==identificacion:
+                        persona=resultado
+                
+                mensaje='Persona encontrada'
+            else:
+                mensaje='No encontrada'
         
-        case 'actualizar':
-            pass
+        case 'actualizar':  
+            identificacion=request.form['pullId']
+            existe=existeId(identificacion)
+            if existe:
+                for resultado in listaPersonas:
+                    if resultado['identificacion']==identificacion:
+                        persona=resultado
+                        bandera='actualizar'
+                        
+                
+                mensaje='Persona actualizada'
+            else:
+                mensaje='No encontrada'
         
         case 'eliminar':
-            pass
+            identificacion=request.form['pullId']
+            existe=existeId(identificacion)
+            if existe:
+                for resultado in listaPersonas:
+                    if resultado['identificacion']==identificacion:
+                        persona=resultado
+                        bandera='eliminar'
+                        
+                mensaje='Persona eliminada'
+            else:
+                mensaje='No encontrada'
     
-    return render_template ('index.html',personas=listaPersonas, mensaje=mensaje, producto=producto)
+    return render_template ( "index.html",persona=persona, bandera=bandera, personas=listaPersonas, mensaje=mensaje)
+
+
+
+
 
 # esta condicion siempre va al final
 if __name__=='__main__':
