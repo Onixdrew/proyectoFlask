@@ -26,6 +26,7 @@ def operaciones():
     option=request.form['btnOption']
     mensaje=''
     bandera=None
+    persona=None
     
     match (option):
         case 'agregar':
@@ -73,35 +74,40 @@ def operaciones():
                 
                 mensaje='Persona encontrada'
             else:
-                mensaje='No encontrada'
+                mensaje='No encontrada con ese ID'
         
         case 'actualizar':  
+            idAnterior= request.form['idAnterior']
             identificacion=request.form['pullId']
-            existe=existeId(identificacion)
-            if existe:
-                for resultado in listaPersonas:
-                    if resultado['identificacion']==identificacion:
-                        persona=resultado
-                        bandera='actualizar'
-                        
-                
-                mensaje='Persona actualizada'
-            else:
-                mensaje='No encontrada'
+            correo=request.form['pullCorreo']
+            persona={
+                "identificacion":identificacion,
+                "Nombre":request.form['pullNombre'],
+                "apellido":request.form['pullApellidos'],
+                "correo":correo  
+            }
+            pos=0
+            for p in listaPersonas:
+                if p['identificacion']==idAnterior:
+                    listaPersonas[pos]=persona
+                    mensaje="persona actualizada"
+                    break
+                pos +=1
         
-        case 'eliminar':
-            identificacion=request.form['pullId']
-            existe=existeId(identificacion)
-            if existe:
-                for resultado in listaPersonas:
-                    if resultado['identificacion']==identificacion:
-                        persona=resultado
-                        bandera='eliminar'
+        # case 'eliminar':
+        #     identificacion=request.form['pullId']
+        #     existe=existeId(identificacion)
+        #     if existe:
+        #         for resultado in listaPersonas:
+        #             if resultado['identificacion']==identificacion:
+        #                 persona=resultado
+        #                 bandera='eliminar'
                         
-                mensaje='Persona eliminada'
-            else:
-                mensaje='No encontrada'
+        #         mensaje='Persona eliminada'
+        #     else:
+        #         mensaje='No encontrada'
     
+
     return render_template ( "index.html",persona=persona, bandera=bandera, personas=listaPersonas, mensaje=mensaje)
 
 

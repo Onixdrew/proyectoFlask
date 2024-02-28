@@ -2,6 +2,7 @@ listaPersonas=[]
 let mensajeValidarDatos=''
 
 function validarDatos(){
+    // a las variables se le asigna el id de los inputs
     let identificacion=pullId
     let nombre=pullNombre
     let apellido=pullApellidos
@@ -30,11 +31,15 @@ function mostrarDatosTabla(){
     let datos=''
     listaPersonas.forEach(persona => {
         datos += "<tr>"
-        datos += "<td>" + persona['identificacion'] + "<td>" 
-        datos += "<td>" + persona['nombre'] + "<td>" 
-        datos += "<td>" + persona['apellido'] + "<td>" 
-        datos += "<td>" + persona['correo'] + "<td>" 
-        datos += "<tr>"
+        datos += "<td>" + persona['identificacion'] + "</td>" 
+        datos += "<td>" + persona['nombre'] + "</td>" 
+        datos += "<td>" + persona['apellido'] + "</td>" 
+        datos += "<td>" + persona['correo'] + "<7td>" 
+        datos += "</tr>"
+
+
+
+        
     });
 
     document.getElementById('datosPersonas').innerHTML=datos
@@ -47,6 +52,9 @@ function mostrarDatosTabla(){
 function agregar(){
     if(validarDatos()){
         const persona={
+            // a las variables se le asigna el id de los inputs
+
+
             "identificacion":pullId.value,
             "nombre":pullNombre.value,
             "apellido":pullApellidos.value,
